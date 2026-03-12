@@ -9,14 +9,13 @@ class TripsController < ApplicationController
   end
 
   def new
-    @trip = current_user.trips.build
+    @trip = Trip.new
   end
 
   def create
     @trip = current_user.trips.build(trip_params)
-
     if @trip.save
-      redirect_to @trip, notice: "Voyage vers #{@trip.destination} créé avec succès !"
+      redirect_to @trip, notice: "Voyage créé avec succès !"
     else
       render :new, status: :unprocessable_entity
     end
@@ -35,15 +34,13 @@ class TripsController < ApplicationController
 
   def destroy
     @trip.destroy!
-    redirect_to trips_path, notice: "Conversation supprimée."
+    redirect_to trips_path, notice: "Voyage supprimé.", status: :see_other
   end
 
   private
 
   def set_trip
     @trip = current_user.trips.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    redirect_to trips_path, alert: "Voyage introuvable."
   end
 
   def trip_params
