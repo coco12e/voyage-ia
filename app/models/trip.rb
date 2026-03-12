@@ -1,7 +1,7 @@
 class Trip < ApplicationRecord
   belongs_to :user
-  has_many :conversations, dependent: :destroy
+  has_many :conversations
 
-  # Remplacez :number_of_travelers par le VRAI nom de la colonne dans votre db/schema.rb
+  # Fait le lien entre le nom demandé par ton prof et le nom réel en base
   alias_attribute :nombre_des_voyageurs, :number_of_travelers
 end
