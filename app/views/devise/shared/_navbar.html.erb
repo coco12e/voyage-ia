@@ -1,0 +1,14 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+  <div class="container">
+    <%= link_to "Voyage IA", root_path, class: "navbar-brand fw-bold" %>
+    <div class="navbar-nav ms-auto">
+      <%= link_to "Accueil", root_path, class: "nav-link" %>
+      <% if user_signed_in? %>
+        <%= link_to "Mes voyages", trips_path, class: "nav-link" %>
+        <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "nav-link btn btn-link text-decoration-none" %>
+      <% else %>
+        <%= link_to "Connexion", new_user_session_path, class: "nav-link" %>
+      <% end %>
+    </div>
+  </div>
+</nav>

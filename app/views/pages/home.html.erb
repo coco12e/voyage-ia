@@ -1,2 +1,18 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="container mt-5">
+  <div class="p-5 mb-4 bg-white border rounded-3 shadow-sm text-center">
+    <h1 class="display-4 fw-bold text-primary">Préparez votre prochain séjour</h1>
+    <p class="lead mt-4 text-muted">
+      Organisez vos voyages et gérez vos envies d'évasion en toute simplicité.
+    </p>
+
+    <div class="mt-5 d-flex justify-content-center gap-3">
+      <% if user_signed_in? %>
+        <%= link_to "Créer une envie de voyage", new_trip_path, class: "btn btn-primary btn-lg px-4" %>
+        <%= link_to "Mes envies de voyage", trips_path, class: "btn btn-outline-secondary btn-lg px-4" %>
+      <% else %>
+        <%= link_to "S'inscrire", new_user_registration_path, class: "btn btn-primary btn-lg px-4" %>
+        <%= link_to "Se connecter", new_user_session_path, class: "btn btn-outline-primary btn-lg px-4" %>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<%= form_with(model: @trip, local: true, class: "needs-validation") do |f| %>
+
+  <% if @trip.errors.any? %>
+    <div class="alert alert-danger">
+      <h4 class="alert-heading">Erreurs lors de l'enregistrement :</h4>
+      <ul>
+        <% @trip.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :name, "Nom du voyage", class: "form-label" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "Ex: Week-end à Rennes", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :destination, "Destination", class: "form-label" %>
+    <%= f.text_field :destination, class: "form-control", placeholder: "Ex: Brest", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :number_of_travelers, "Nombre de voyageurs", class: "form-label" %>
+    <%= f.number_field :number_of_travelers, class: "form-control", min: 1, required: true %>
+  </div>
+
+  <div class="mt-4">
+    <%= f.submit "Enregistrer le voyage", class: "btn btn-primary" %>
+    <%= link_to "Annuler", trips_path, class: "btn btn-link text-muted" %>
+  </div>
+<% end %>
