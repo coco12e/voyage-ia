@@ -4,7 +4,11 @@ Rails.application.routes.draw do
 
   resources :trips, only: [:index, :new, :create, :show, :edit, :update, :destroy]
 
-  resources :conversations, only: [:index, :show, :destroy] do
-    resources :messages, only: [:create]
+  resources :challenges, only: [:index, :show] do
+    resources :chats, only: [:create]
+  end
+
+  resources :chats, only: [:show] do
+    resources :chat_messages, only: [:create]
   end
 end
