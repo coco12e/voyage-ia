@@ -1,7 +1,8 @@
 class Trip < ApplicationRecord
   belongs_to :user
-  has_many :conversations
+  has_many :conversations, dependent: :destroy
 
-  # Fait le lien entre le nom demandé par ton prof et le nom réel en base
-  alias_attribute :nombre_des_voyageurs, :number_of_travelers
+  validates :name, presence: true
+  validates :destination, presence: true
+  validates :number_of_travelers, presence: true, numericality: { only_integer: true, greater_than: 0 }
 end

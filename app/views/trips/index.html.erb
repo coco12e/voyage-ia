@@ -4,7 +4,7 @@
     <%= link_to "Nouvelle envie", new_trip_path, class: "btn btn-primary" %>
   </div>
 
-  <% if @trips.present? %>
+  <% if @trips.any? %>
     <div class="row">
       <% @trips.each do |trip| %>
         <div class="col-md-4 mb-3">
@@ -14,13 +14,15 @@
               <h6 class="card-subtitle mb-2 text-muted"><%= trip.destination %></h6>
 
               <p class="card-text mb-3">
-                <%# On utilise l'alias ici %>
-                <strong>Voyageurs :</strong> <%= trip.nombre_des_voyageurs || 0 %>
+                <strong>Voyageurs :</strong> <%= trip.number_of_travelers || 0 %>
               </p>
 
               <div class="d-flex gap-2">
                 <%= link_to "Détails", trip_path(trip), class: "btn btn-outline-primary btn-sm" %>
-                <%= button_to "Supprimer", trip_path(trip), method: :delete, data: { turbo_confirm: "Êtes-vous sûr ?" }, class: "btn btn-outline-danger btn-sm" %>
+                <%= link_to "Modifier", edit_trip_path(trip), class: "btn btn-outline-warning btn-sm" %>
+                <%= button_to "Supprimer", trip_path(trip),
+                              method: :delete,
+                              class: "btn btn-outline-danger btn-sm" %>
               </div>
             </div>
           </div>

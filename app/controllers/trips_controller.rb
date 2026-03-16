@@ -15,7 +15,7 @@ class TripsController < ApplicationController
   def create
     @trip = current_user.trips.build(trip_params)
     if @trip.save
-      redirect_to @trip, notice: "Voyage créé avec succès !"
+      redirect_to trip_path(@trip), notice: "Voyage créé avec succès !"
     else
       render :new, status: :unprocessable_entity
     end
@@ -26,7 +26,7 @@ class TripsController < ApplicationController
 
   def update
     if @trip.update(trip_params)
-      redirect_to @trip, notice: "Voyage mis à jour."
+      redirect_to trip_path(@trip), notice: "Voyage mis à jour."
     else
       render :edit, status: :unprocessable_entity
     end
@@ -44,6 +44,7 @@ class TripsController < ApplicationController
   end
 
   def trip_params
-    params.require(:trip).permit(:name, :destination, :nombre_des_voyageurs)
+    # On utilise ici le nom de la colonne défini dans le schéma
+    params.require(:trip).permit(:name, :destination, :number_of_travelers)
   end
 end

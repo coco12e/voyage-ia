@@ -19,7 +19,8 @@
       <div class="row">
         <div class="col-12">
           <h6 class="text-uppercase text-muted small">Nombre de voyageurs</h6>
-          <p class="fs-3 text-secondary"><%= @trip.nombre_des_voyageurs %></p>
+          <%# CORRECTION : utilisation de la méthode correcte correspondant au schéma %>
+          <p class="fs-3 text-secondary"><%= @trip.number_of_travelers %></p>
         </div>
       </div>
     </div>
