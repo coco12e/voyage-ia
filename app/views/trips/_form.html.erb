@@ -1,10 +1,8 @@
-<%= simple_form_for(@trip, html: { novalidate: true }) do |f| %>
+<%= simple_form_for(@trip, defaults: { required: false }) do |f| %>
   <%= f.input :name, label: "Nom du voyage" %>
-  <%= f.input :destination, label: "Destination" %>
-  <%= f.input :number_of_travelers, label: "Nombre de voyageurs" %>
+  <%= f.input :destination, label: "Ville de destination" %>
+  <%= f.input :number_of_travelers, label: "Nombre de voyageurs", as: :integer %>
 
-  <div class="d-flex align-items-center">
-    <%= f.button :submit, "Enregistrer le voyage", class: "btn btn-primary" %>
-    <%= link_to "Annuler", trips_path, class: "btn btn-link text-muted" %>
-  </div>
+  <%= f.button :submit, "Enregistrer", class: "btn btn-primary" %>
+  <%= link_to "Annuler", trips_path, class: "btn btn-link" %>
 <% end %>

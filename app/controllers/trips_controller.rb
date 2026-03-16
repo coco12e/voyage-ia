@@ -13,9 +13,10 @@ class TripsController < ApplicationController
   end
 
   def create
-    @trip = current_user.trips.build(trip_params)
+    @trip = Trip.new(trip_params)
+    @trip.user = current_user
     if @trip.save
-      redirect_to trip_path(@trip), notice: "Voyage créé avec succès !"
+      redirect_to trip_path(@trip), notice: "Voyage créé avec succès."
     else
       render :new, status: :unprocessable_entity
     end
@@ -33,18 +34,17 @@ class TripsController < ApplicationController
   end
 
   def destroy
-    @trip.destroy!
-    redirect_to trips_path, notice: "Voyage supprimé.", status: :see_other
+    @trip.destroy
+    redirect_to trips_path, status: :see_other
   end
 
   private
 
   def set_trip
-    @trip = current_user.trips.find(params[:id])
+    @trip = Trip.find(params[:id])
   end
 
   def trip_params
-    # On utilise ici le nom de la colonne défini dans le schéma
     params.require(:trip).permit(:name, :destination, :number_of_travelers)
   end
 end

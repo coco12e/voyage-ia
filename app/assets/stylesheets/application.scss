@@ -7,9 +7,3 @@
 
 @import "components/index";
 @import "pages/index";
-
-.was-validated .form-control:valid, .form-control.is-valid,
-.was-validated .form-select:valid, .form-select.is-valid {
-  background-image: none !important;
-  border-color: #dee2e6;
-}
