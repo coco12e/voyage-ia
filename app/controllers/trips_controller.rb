@@ -6,6 +6,7 @@ class TripsController < ApplicationController
   end
 
   def show
+    @chats = @trip.chats.where(user: current_user)
   end
 
   def new
@@ -46,6 +47,6 @@ class TripsController < ApplicationController
   end
 
   def trip_params
-    params.require(:trip).permit(:name, :destination, :number_of_travelers)
+    params.require(:trip).permit(:name, :destination, :travellers_number)
   end
 end
