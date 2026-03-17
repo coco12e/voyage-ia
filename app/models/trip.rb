@@ -1,5 +1,6 @@
 class Trip < ApplicationRecord
   belongs_to :user
+  has_many :chats, dependent: :destroy
 
   validates :name, :destination, :number_of_travelers, presence: true
   validates :number_of_travelers, numericality: { only_integer: true, greater_than: 0 }

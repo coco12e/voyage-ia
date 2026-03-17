@@ -1,8 +1,19 @@
-<%= simple_form_for(@trip, defaults: { required: false }) do |f| %>
-  <%= f.input :name, label: "Nom du voyage" %>
-  <%= f.input :destination, label: "Ville de destination" %>
-  <%= f.input :number_of_travelers, label: "Nombre de voyageurs", as: :integer %>
+<%= form_with model: @trip do |f| %>
+  <div>
+    <%= f.label :name, "Nom du voyage" %>
+    <%= f.text_field :name %>
+  </div>
 
-  <%= f.button :submit, "Enregistrer", class: "btn btn-primary" %>
-  <%= link_to "Annuler", trips_path, class: "btn btn-link" %>
+  <div>
+    <%= f.label :destination, "Ville de destination" %>
+    <%= f.text_field :destination %>
+  </div>
+
+  <div>
+    <%= f.label :number_of_travelers, "Nombre de voyageurs" %>
+    <%= f.number_field :number_of_travelers %>
+  </div>
+
+  <%= f.submit "Enregistrer" %>
+  <%= link_to "Annuler", trips_path %>
 <% end %>

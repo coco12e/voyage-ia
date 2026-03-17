@@ -1,30 +1,19 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Mes envies de voyage</h1>
-    <%= link_to "Nouvelle envie", new_trip_path, class: "btn btn-primary" %>
-  </div>
+<h1>Mes envies de voyage</h1>
+<%= link_to "Nouvelle envie", new_trip_path %>
 
-  <% if @trips.any? %>
-    <div class="row">
-      <% @trips.each do |trip| %>
-        <div class="col-12 col-md-4 mb-3">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title"><%= trip.name %></h5>
-              <h6 class="card-subtitle mb-2 text-muted"><%= trip.destination %></h6>
-              <p class="card-text">Voyageurs : <%= trip.number_of_travelers %></p>
+<% if @trips.any? %>
+  <ul>
+    <% @trips.each do |trip| %>
+      <li>
+        <strong><%= trip.name %></strong> - <%= trip.destination %>
+        (Voyageurs : <%= trip.number_of_travelers %>)
 
-              <div class="d-flex gap-2">
-                <%= link_to "Détails", trip_path(trip), class: "btn btn-outline-primary btn-sm" %>
-                <%= link_to "Modifier", edit_trip_path(trip), class: "btn btn-outline-warning btn-sm" %>
-                <%= button_to "Supprimer", trip_path(trip), method: :delete, class: "btn btn-outline-danger btn-sm" %>
-              </div>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="text-muted">Vous n'avez pas encore d'envies de voyage.</p>
-  <% end %>
-</div>
+        <%= link_to "Détails", trip_path(trip) %>
+        <%= link_to "Modifier", edit_trip_path(trip) %>
+        <%= button_to "Supprimer", trip_path(trip), method: :delete %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Vous n'avez pas encore d'envies de voyage.</p>
+<% end %>

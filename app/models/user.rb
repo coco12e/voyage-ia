@@ -8,4 +8,5 @@ class User < ApplicationRecord
 
   has_many :trips, dependent: :destroy
   has_many :conversations, dependent: :destroy
+  has_many :chats, dependent: :destroy
 end

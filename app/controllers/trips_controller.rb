@@ -15,6 +15,7 @@ class TripsController < ApplicationController
   def create
     @trip = Trip.new(trip_params)
     @trip.user = current_user
+
     if @trip.save
       redirect_to trip_path(@trip), notice: "Voyage créé avec succès."
     else
@@ -41,7 +42,7 @@ class TripsController < ApplicationController
   private
 
   def set_trip
-    @trip = Trip.find(params[:id])
+    @trip = current_user.trips.find(params[:id])
   end
 
   def trip_params

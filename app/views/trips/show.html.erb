@@ -1,32 +1,10 @@
-<div class="container mt-5">
-  <div class="card border-0 shadow">
-    <div class="card-body p-5">
-      <h1 class="mb-4">Détails de votre voyage</h1>
-      <hr>
+<h1>Détails de votre voyage</h1>
 
-      <div class="row">
-        <div class="col-12 col-md-6 mb-4">
-          <h6 class="text-uppercase text-muted small">Nom du voyage</h6>
-          <p class="fs-3 fw-bold text-primary"><%= @trip.name %></p>
-        </div>
-
-        <div class="col-12 col-md-6 mb-4">
-          <h6 class="text-uppercase text-muted small">Destination</h6>
-          <p class="fs-3"><%= @trip.destination %></p>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <h6 class="text-uppercase text-muted small">Nombre de voyageurs</h6>
-          <p class="fs-3 text-secondary"><%= @trip.number_of_travelers %></p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-5 d-flex gap-3 align-items-center">
-    <%= link_to "← Retour à la liste", trips_path, class: "btn btn-outline-primary" %>
-    <%= button_to "Supprimer ce voyage", trip_path(@trip), method: :delete, class: "btn btn-outline-danger ms-auto" %>
-  </div>
+<div>
+  <p>Nom du voyage : <%= @trip.name %></p>
+  <p>Destination : <%= @trip.destination %></p>
+  <p>Nombre de voyageurs : <%= @trip.number_of_travelers %></p>
 </div>
+
+<%= link_to "← Retour à la liste", trips_path %>
+<%= button_to "Supprimer ce voyage", trip_path(@trip), method: :delete %>
