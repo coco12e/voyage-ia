@@ -44,14 +44,21 @@
           <% if @chats.any? %>
             <div class="list-group list-group-flush mb-3">
               <% @chats.each do |chat| %>
-                <%= link_to chat.title, chat_path(chat), class: "list-group-item list-group-item-action border-0 px-0 text-dark fw-bold" %>
+                <div class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
+
+                  <%= link_to chat.title, chat_path(chat), class: "text-decoration-none text-dark fw-bold flex-grow-1" %>
+                  <%= button_to "Supprimer", chat_path(chat),
+                      method: :delete,
+                      class: "btn btn-sm btn-outline-danger" %>
+
+                </div>
               <% end %>
             </div>
           <% else %>
             <p class="text-dark small">Il n'y a pas encore de discussions.</p>
           <% end %>
 
-          <div class="d-grid">
+          <div class="d-grid mt-2">
             <%= button_to "Nouvelle discussion", trip_chats_path(@trip), class: "btn btn-primary" %>
           </div>
         </div>
