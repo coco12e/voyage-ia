@@ -1,18 +1,9 @@
 <div class="container mt-4 mb-5">
-  <div class="d-flex align-items-center justify-content-between mb-4">
-    <div class="d-flex align-items-center">
-      <%= link_to trip_path(@chat.trip), class: "text-decoration-none text-primary me-3" do %>
-        ← <%= @chat.trip.name %>
-      <% end %>
-      <h1 class="h4 fw-bold mb-0"><%= @chat.title %></h1>
-    </div>
-
-    <%# Bouton Supprimer la discussion sans confirmation %>
-    <%= link_to chat_path(@chat),
-        data: { turbo_method: :delete },
-        class: "btn btn-outline-danger btn-sm" do %>
-      Supprimer la discussion
+  <div class="d-flex align-items-center mb-4">
+    <%= link_to trip_path(@chat.trip), class: "text-decoration-none text-primary me-3" do %>
+      ← <%= @chat.trip.name %>
     <% end %>
+    <h1 class="h4 fw-bold mb-0"><%= @chat.title %></h1>
   </div>
 
   <div class="card shadow-sm border mb-4">
