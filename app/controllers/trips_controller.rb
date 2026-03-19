@@ -2,11 +2,11 @@ class TripsController < ApplicationController
   before_action :set_trip, only: %i[show edit update destroy]
 
   def index
-    @trips = current_user.trips.order(created_at: :desc)
+    @trips = current_user.trips.all
   end
 
   def show
-    @chats = @trip.chats.where(user: current_user)
+    @chats = @trip.chats
   end
 
   def new
@@ -14,11 +14,9 @@ class TripsController < ApplicationController
   end
 
   def create
-    @trip = Trip.new(trip_params)
-    @trip.user = current_user
-
+    @trip = current_user.trips.new(trip_params)
     if @trip.save
-      redirect_to trip_path(@trip), notice: "Voyage créé avec succès."
+      redirect_to trip_path(@trip)
     else
       render :new, status: :unprocessable_entity
     end
@@ -29,7 +27,7 @@ class TripsController < ApplicationController
 
   def update
     if @trip.update(trip_params)
-      redirect_to trip_path(@trip), notice: "Voyage mis à jour."
+      redirect_to trip_path(@trip)
     else
       render :edit, status: :unprocessable_entity
     end

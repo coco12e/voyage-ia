@@ -1,21 +1,37 @@
-<h2>Créer un nouveau voyage</h2>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
 
-<%= form_with model: @trip do |f| %>
-  <div>
-    <%= f.label :name, "Nom du voyage" %>
-    <%= f.text_field :name %>
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+
+          <h2 class="text-center mb-4">Créer un nouveau voyage</h2>
+
+          <%= form_with model: @trip do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, "Nom du voyage", class: "form-label fw-bold" %>
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :destination, "Ville de destination", class: "form-label fw-bold" %>
+              <%= f.text_field :destination, class: "form-control" %>
+            </div>
+
+            <div class="mb-4">
+              <%= f.label :travellers_number, "Nombre de voyageurs", class: "form-label fw-bold" %>
+              <%= f.number_field :travellers_number, class: "form-control" %>
+            </div>
+
+            <div class="d-grid gap-2">
+              <%= f.submit "Créer mon voyage", class: "btn btn-primary" %>
+              <%= link_to "Annuler", trips_path, class: "btn btn-outline-danger text-decoration-none" %>
+            </div>
+          <% end %>
+
+        </div>
+      </div>
+
+    </div>
   </div>
-
-  <div>
-    <%= f.label :destination, "Ville de destination" %>
-    <%= f.text_field :destination %>
-  </div>
-
-  <div>
-    <%= f.label :number_of_travelers, "Nombre de voyageurs" %>
-    <%= f.number_field :number_of_travelers %>
-  </div>
-
-  <%= f.submit "Créer mon voyage" %>
-  <%= link_to "Annuler", trips_path %>
-<% end %>
+</div>

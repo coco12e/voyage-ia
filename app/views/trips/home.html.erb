@@ -1,0 +1,17 @@
+<div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+  <div class="card shadow-lg border-0 p-5 text-center" style="max-width: 800px; border-radius: 20px;">
+    <div class="card-body">
+      <h1 class="display-4 fw-bold mb-4" style="color: #0dcaf0;">Préparez votre prochain séjour</h1>
+      <p class="lead text-dark mb-5">
+        Organisez vos voyages et gérez vos envies d'évasion en toute simplicité avec Voyage IA.
+      </p>
+
+      <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+        <%= link_to "Créer une envie de voyage", new_trip_path, class: "btn btn-primary btn-lg px-4 shadow-sm" %>
+        <%= link_to "Mes envies de voyage", trips_path,
+            class: "btn btn-lg px-4 text-white shadow-sm",
+            style: "background-color: #6f42c1; border: none;" %>
+      </div>
+    </div>
+  </div>
+</div>

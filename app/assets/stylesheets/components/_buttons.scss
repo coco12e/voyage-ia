@@ -1,0 +1,24 @@
+$teal-400: #20c997;
+
+.btn-teal {
+  background-color: $teal-400;
+  border-color: $teal-400;
+  color: white;
+
+  &:hover {
+    background-color: darken($teal-400, 8%);
+    border-color: darken($teal-400, 8%);
+    color: white;
+  }
+}
+
+.btn-outline-teal {
+  color: $teal-400;
+  border-color: $teal-400;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $teal-400;
+    color: white;
+  }
+}
