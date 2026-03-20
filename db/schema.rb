@@ -14,12 +14,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_19_181356) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "challenges", force: :cascade do |t|
-    t.text "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "chats", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "title"
