@@ -1,42 +1,47 @@
 <div class="container mt-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold text-dark">Mes envies de voyage</h1>
-    <%= link_to "Nouvelle envie", new_trip_path, class: "btn btn-primary shadow-sm" %>
+    <%= link_to "Nouvelle envie", new_trip_path, class: "btn btn-primary fw-bold shadow-sm px-4" %>
   </div>
 
   <% if @trips.any? %>
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <% @trips.each do |trip| %>
         <div class="col">
-          <div class="card h-100 shadow-sm border-0">
-            <div class="card-body d-flex flex-column">
+          <div class="card h-100 shadow-sm border-0 rounded-3">
+            <div class="card-body d-flex flex-column p-4">
 
-              <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="text-dark">Nom du voyage :</span>
-                <h5 class="card-title fw-bold text-primary mb-0"><%= trip.name %></h5>
+              <div class="mb-3">
+                <span class="text-muted small">Nom du voyage :</span>
+                <h5 class="fw-bold text-primary mb-0"><%= trip.name %></h5>
               </div>
 
               <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="text-dark">Destination :</span>
-                <h6 class="card-subtitle mb-0 text-dark fw-bold"><%= trip.destination %></h6>
+                <i class="fa-solid fa-map text-secondary"></i>
+                <span class="text-dark fw-bold"><%= trip.destination %></span>
               </div>
 
-              <div class="d-flex align-items-center gap-2">
-                <span class="text-dark">Voyageurs :</span>
+              <div class="d-flex align-items-center gap-2 mb-4">
+                <i class="fa-solid fa-users text-secondary"></i>
                 <span class="fw-bold text-dark"><%= trip.travellers_number %></span>
               </div>
 
-              <div class="mt-auto pt-4 d-flex justify-content-between align-items-center">
-                <div class="d-flex gap-2">
-                  <%= link_to "Détails", trip_path(trip), class: "btn btn-sm btn-outline-primary" %>
-                  <%= link_to "Modifier", edit_trip_path(trip), class: "btn btn-sm btn-outline-success" %>
+              <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                <div class="d-flex gap-3 align-items-center">
+                  <%= link_to edit_trip_path(trip), class: "text-secondary text-decoration-none" do %>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  <% end %>
+
+                  <%= button_to trip_path(trip),
+                      method: :delete,
+                      class: "btn btn-link p-0 text-danger text-decoration-none" do %>
+                    <i class="fa-solid fa-trash"></i>
+                  <% end %>
                 </div>
 
-                <%= button_to "Supprimer", trip_path(trip),
-                    method: :delete,
-                    class: "btn btn-sm btn-outline-danger",
-                    data: { confirm: "Êtes-vous sûr ?" } %>
+                <%= link_to "Détails", trip_path(trip), class: "btn btn-sm btn-outline-primary rounded-pill px-3" %>
               </div>
+
             </div>
           </div>
         </div>
@@ -45,7 +50,7 @@
   <% else %>
     <div class="text-center py-5">
       <p class="text-dark fw-bold">Vous n'avez pas encore d'envies de voyage.</p>
-      <%= link_to "Créer mon premier voyage", new_trip_path, class: "btn btn-outline-primary mt-2" %>
+      <%= link_to "Créer mon premier voyage", new_trip_path, class: "btn btn-primary mt-2" %>
     </div>
   <% end %>
 </div>

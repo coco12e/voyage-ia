@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
@@ -14,12 +17,15 @@
       <div class="container">
         <%= link_to "Voyage IA", root_path, class: "navbar-brand fw-bold" %>
 
-        <div class="navbar-nav ms-auto">
+        <div class="navbar-nav ms-auto align-items-center">
           <%= link_to "Accueil", root_path, class: "nav-link #{'active' if current_page?(root_path)}" %>
 
           <% if user_signed_in? %>
             <%= link_to "Mes voyages", trips_path, class: "nav-link #{'active' if current_page?(trips_path)}" %>
-            <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, class: "nav-link btn btn-link" %>
+            <%= button_to "Déconnexion", destroy_user_session_path,
+                method: :delete,
+                class: "nav-link btn btn-link border-0 py-0",
+                style: "text-decoration: none;" %>
           <% else %>
             <%= link_to "Connexion", new_user_session_path, class: "nav-link" %>
           <% end %>
@@ -29,8 +35,8 @@
 
     <div class="container mt-3">
       <% flash.each do |type, message| %>
-        <% alert_class = type.to_s == 'alert' ? 'danger' : 'info' %>
-        <div class="alert alert-<%= alert_class %> alert-dismissible fade show" role="alert">
+        <% alert_class = (type.to_s == 'alert' || type.to_s == 'danger') ? 'danger' : 'success' %>
+        <div class="alert alert-<%= alert_class %> alert-dismissible fade show shadow-sm" role="alert">
           <%= message %>
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

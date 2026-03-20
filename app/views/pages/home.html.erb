@@ -1,15 +1,20 @@
 <div class="container mt-5">
   <div class="p-5 mb-4 bg-white border rounded-3 shadow-sm text-center">
+
     <h1 class="display-4 fw-bold mb-0" style="color: #0dcaf0;">Préparez votre prochain séjour</h1>
+
     <p class="lead mt-4 text-dark">
       Organisez vos voyages et gérez vos envies d'évasion en toute simplicité.
     </p>
 
     <div class="mt-5 d-flex justify-content-center gap-3">
       <% if user_signed_in? %>
-        <%= link_to "Créer une envie de voyage", new_trip_path, class: "btn btn-primary btn-lg px-4" %>
+        <%= link_to "Créer une envie de voyage", new_trip_path,
+            class: "btn btn-lg px-4 text-white fw-bold",
+            style: "background-color: #0dcaf0; border: none;" %>
+
         <%= link_to "Mes envies de voyage", trips_path,
-            class: "btn btn-lg px-4 text-white",
+            class: "btn btn-lg px-4 text-white fw-bold",
             style: "background-color: #6f42c1; border: none;" %>
       <% else %>
         <%= link_to "S'inscrire", new_user_registration_path, class: "btn btn-primary btn-lg px-4" %>
