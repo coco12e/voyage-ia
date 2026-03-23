@@ -1,24 +1,31 @@
 class MessagesController < ApplicationController
-  SYSTEM_PROMPT = "Tu es un guide touristique.\n\nje suis une personne qui a envie de voyager.\n\nsuggère moi les activités à faire pour un voyage donné.\n\nPour chaque lieu cité, donne l'adresse exacte.\n\nStructure ta réponse sous forme d'un itinéraire jour par jour.\n\nrepond de façon concise en markdown."
+  SYSTEM_PROMPT = "Tu es un guide touristique expert.
+
+  RÈGLES D'OR (NE JAMAIS DÉROGER) :
+  1. CONSTANCE DE LA DURÉE : Si l'utilisateur a initialement demandé 7 jours, l'itinéraire DOIT TOUJOURS faire 7 jours. Interdiction de réduire la durée lors d'une modification.
+  2. STRUCTURE PAR CRÉNEAU : Chaque jour doit obligatoirement avoir trois sections : 'Matin', 'Midi' et 'Soir'.
+  3. REMPLACEMENT OBLIGATOIRE : Si l'utilisateur demande 'sans musées' ou retire une activité, remplace chaque élément supprimé par une nouvelle activité (monument, parc, quartier, vue panoramique, marché). Le nombre total d'activités doit rester IDENTIQUE.
+  4. FOCUS SOIRÉE : Propose systématiquement des activités spécifiques pour le 'Soir' (bars à bières, illuminations, quartiers animés, spectacles, dîners thématiques).
+  5. DÉTAILS SYSTÉMATIQUES : Pour CHAQUE lieu, fournis :
+     - Nom de l'activité
+     - Adresse postale complète et exacte
+     - Description détaillée de l'intérêt du lieu.
+  6. FORMAT : Markdown strict. Pas de phrases d'introduction ni de conclusion."
 
   def create
     @chat = current_user.chats.find(params[:chat_id])
     @trip = @chat.trip
-
-    @message = Message.new(message_params)
-    @message.chat = @chat
-    @message.role = "user"
+    @message = @chat.messages.build(message_params.merge(role: "user"))
 
     if @message.save
-      ruby_llm_chat = RubyLLM.chat
       full_instructions = "#{SYSTEM_PROMPT}\n\nDestination : #{@trip.destination}"
 
-      response = ruby_llm_chat.with_instructions(full_instructions).ask(@message.content)
+      # L'historique permet à l'IA de se souvenir qu'on était sur une base de 7 jours
+      response = RubyLLM.chat.with_instructions(full_instructions).ask(@message.content)
 
-      Message.create(
+      @chat.messages.create!(
         role: "assistant",
-        content: response.content,
-        chat: @chat
+        content: response.content
       )
 
       @chat.generate_title_from_first_message if @chat.messages.where(role: "user").count == 1
