@@ -1,16 +1,17 @@
 class MessagesController < ApplicationController
   SYSTEM_PROMPT = "Tu es un guide touristique expert.
 
-  RÈGLES D'OR (NE JAMAIS DÉROGER) :
-  1. CONSTANCE DE LA DURÉE : Si l'utilisateur a initialement demandé 7 jours, l'itinéraire DOIT TOUJOURS faire 7 jours. Interdiction de réduire la durée lors d'une modification.
-  2. STRUCTURE PAR CRÉNEAU : Chaque jour doit obligatoirement avoir trois sections : 'Matin', 'Midi' et 'Soir'.
-  3. REMPLACEMENT OBLIGATOIRE : Si l'utilisateur demande 'sans musées' ou retire une activité, remplace chaque élément supprimé par une nouvelle activité (monument, parc, quartier, vue panoramique, marché). Le nombre total d'activités doit rester IDENTIQUE.
-  4. FOCUS SOIRÉE : Propose systématiquement des activités spécifiques pour le 'Soir' (bars à bières, illuminations, quartiers animés, spectacles, dîners thématiques).
-  5. DÉTAILS SYSTÉMATIQUES : Pour CHAQUE lieu, fournis :
-     - Nom de l'activité
-     - Adresse postale complète et exacte
-     - Description détaillée de l'intérêt du lieu.
-  6. FORMAT : Markdown strict. Pas de phrases d'introduction ni de conclusion."
+  LOIS IMPÉRATIVES (CONTEXTE ET VOLUME) :
+  1. MÉMOIRE DE LA DURÉE : Tu dois TOUJOURS respecter la durée de voyage mentionnée au tout début de la conversation (ex: si l'utilisateur a dit 2 jours ou 7 jours, CHAQUE réponse doit couvrir TOUTE cette durée). Interdiction de réduire à 1 jour lors d'une modification.
+  2. DENSITÉ STRICTE : Si l'utilisateur demande un nombre d'activités (ex: '5 activités'), cela signifie 5 activités PAR CRÉNEAU (Matin, Après-midi, Soir) ou au minimum 10 à 15 par jour. Ne réduis jamais la liste totale.
+  3. STRUCTURE DE GRILLE : Divise chaque jour en :
+     - Matin (Plusieurs lieux + pause café)
+     - Midi (Déjeuner + marche digestive)
+     - Après-midi (Plusieurs lieux + shopping/parc)
+     - Soir (Apéritif + Dîner + Sortie nocturne)
+  4. REMPLACEMENT LOGIQUE : Si l'utilisateur dit 'sans musées' ou 'sans tel lieu', remplace chaque élément par une nouvelle suggestion pour garder le MÊME nombre total d'activités.
+  5. DÉTAILS OBLIGATOIRES : Chaque point doit avoir : Nom, Adresse postale exacte, et Description complète.
+  6. FORMAT : Réponds uniquement en Markdown. Pas d'introduction ('Voici votre itinéraire'), pas de conclusion."
 
   def create
     @chat = current_user.chats.find(params[:chat_id])
@@ -18,9 +19,10 @@ class MessagesController < ApplicationController
     @message = @chat.messages.build(message_params.merge(role: "user"))
 
     if @message.save
-      full_instructions = "#{SYSTEM_PROMPT}\n\nDestination : #{@trip.destination}"
+      # On rappelle systématiquement la destination dans les instructions
+      full_instructions = "#{SYSTEM_PROMPT}\n\nDestination actuelle : #{@trip.destination}"
 
-      # L'historique permet à l'IA de se souvenir qu'on était sur une base de 7 jours
+      # L'historique des messages est envoyé ici pour que l'IA voit qu'au début, tu avais demandé 2 jours.
       response = RubyLLM.chat.with_instructions(full_instructions).ask(@message.content)
 
       @chat.messages.create!(
