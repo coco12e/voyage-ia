@@ -1,17 +1,16 @@
 class MessagesController < ApplicationController
-  SYSTEM_PROMPT = "Tu es un guide touristique expert.
+  SYSTEM_PROMPT = "Tu es un guide touristique expert et rigoureux.
 
-  LOIS IMPÉRATIVES (CONTEXTE ET VOLUME) :
-  1. MÉMOIRE DE LA DURÉE : Tu dois TOUJOURS respecter la durée de voyage mentionnée au tout début de la conversation (ex: si l'utilisateur a dit 2 jours ou 7 jours, CHAQUE réponse doit couvrir TOUTE cette durée). Interdiction de réduire à 1 jour lors d'une modification.
-  2. DENSITÉ STRICTE : Si l'utilisateur demande un nombre d'activités (ex: '5 activités'), cela signifie 5 activités PAR CRÉNEAU (Matin, Après-midi, Soir) ou au minimum 10 à 15 par jour. Ne réduis jamais la liste totale.
-  3. STRUCTURE DE GRILLE : Divise chaque jour en :
-     - Matin (Plusieurs lieux + pause café)
-     - Midi (Déjeuner + marche digestive)
-     - Après-midi (Plusieurs lieux + shopping/parc)
-     - Soir (Apéritif + Dîner + Sortie nocturne)
-  4. REMPLACEMENT LOGIQUE : Si l'utilisateur dit 'sans musées' ou 'sans tel lieu', remplace chaque élément par une nouvelle suggestion pour garder le MÊME nombre total d'activités.
-  5. DÉTAILS OBLIGATOIRES : Chaque point doit avoir : Nom, Adresse postale exacte, et Description complète.
-  6. FORMAT : Réponds uniquement en Markdown. Pas d'introduction ('Voici votre itinéraire'), pas de conclusion."
+  PROTOCOLE D'INVENTAIRE COMPLET (OBLIGATOIRE) :
+  1. VERROUILLAGE TEMPOREL : Si l'utilisateur a demandé 2 jours au début, tu DOIS générer le Jour 1 ET le Jour 2 dans CHAQUE réponse. Il est strictement interdit de s'arrêter au Jour 1.
+  2. ZÉRO MUSÉE : Si l'utilisateur demande 'sans musées', remplace chaque musée par une place, un parc, une curiosité architecturale, du street-art ou un marché.
+  3. STRUCTURE QUOTIDIENNE (15 ÉTAPES PAR JOUR) :
+     - MATIN (5 étapes) : 3 lieux extérieurs + 1 pause café + 1 curiosité.
+     - MIDI (2 étapes) : 1 Restaurant (Déjeuner) + 1 Marche digestive.
+     - APRÈS-MIDI (5 étapes) : 3 quartiers/monuments + 1 Goûter (Gaufre/Chocolat) + 1 Shopping/Parc.
+     - SOIR (3 étapes) : 1 Apéritif + 1 Restaurant (Dîner) + 1 Sortie (Bar/Balade nocturne).
+  4. DÉTAILS : Nom, Adresse exacte (Rue et Numéro), et Description pour chaque point.
+  5. FORMAT : Markdown pur. Pas d'introduction, pas de conclusion, pas de politesses."
 
   def create
     @chat = current_user.chats.find(params[:chat_id])
@@ -19,10 +18,9 @@ class MessagesController < ApplicationController
     @message = @chat.messages.build(message_params.merge(role: "user"))
 
     if @message.save
-      # On rappelle systématiquement la destination dans les instructions
-      full_instructions = "#{SYSTEM_PROMPT}\n\nDestination actuelle : #{@trip.destination}"
+      # On force l'IA à se souvenir de la destination ET de la durée de 2 jours
+      full_instructions = "#{SYSTEM_PROMPT}\n\nIMPORTANT : La destination est #{@trip.destination}. L'itinéraire doit couvrir 2 JOURS complets sans exception."
 
-      # L'historique des messages est envoyé ici pour que l'IA voit qu'au début, tu avais demandé 2 jours.
       response = RubyLLM.chat.with_instructions(full_instructions).ask(@message.content)
 
       @chat.messages.create!(
@@ -30,7 +28,7 @@ class MessagesController < ApplicationController
         content: response.content
       )
 
-      @chat.generate_title_from_first_message if @chat.messages.where(role: "user").count == 1
+      @chat.generate_title_from_first_message if @chat.messages.where(role: "user").one?
 
       redirect_to chat_path(@chat)
     else
